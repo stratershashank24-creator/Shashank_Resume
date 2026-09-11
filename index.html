@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Shashank Goud Kodipyaka - portfolio">
+<title>Shashank Goud Kodipyaka</title>
+<style>
+  /* Committed dark "deep space" palette — this page runs one visual world by design. */
+  :root{
+    --bg:#0a0d16;
+    --bg-elev:#141a27;
+    --bg-inset:#181f30;
+    --text:#e7ebf0;
+    --text-dim:#8d99a8;
+    --accent:#ff9d5c;
+    --accent-soft:#3a2717;
+    --border:#262f40;
+    --border-strong:#39445a;
+    --good:#4cbf7d;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -18px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background-color:var(--bg);
+    color:var(--text);
+    font-family:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate(45 16 16)'%3E%3Cpath d='M16 2 L10 13 L22 13 Z' fill='%23e7ebf0'/%3E%3Cpath d='M10 13 L22 13 L22 23 Q22 25 20 25 L12 25 Q10 25 10 23 Z' fill='%23e7ebf0'/%3E%3Ccircle cx='16' cy='15.5' r='2.2' fill='%230a0d16' stroke='%23ff9d5c' stroke-width='1'/%3E%3Cpath d='M10 20 L5 26 L10 24 Z' fill='%23ff9d5c'/%3E%3Cpath d='M22 20 L27 26 L22 24 Z' fill='%23ff9d5c'/%3E%3Cpath d='M12 25 L16 31 L20 25 Z' fill='%23ffcf8a'/%3E%3C/g%3E%3C/svg%3E") 26 6, auto;
+  }
+  #nebula-bg{
+    position:fixed; inset:0; width:100%; height:100%;
+    z-index:-1; display:block; pointer-events:none;
+    background:var(--bg);
+  }
+  /* Color-grade + vignette + grain, layered over the canvas like a
+     photo-editing filter, to give the nebula scene the depth and
+     contrast of real astrophotography rather than flat canvas fills. */
+  #bg-filter{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(ellipse 100% 75% at 50% 34%, transparent 38%, rgba(6,6,14,.62) 100%),
+      linear-gradient(155deg, rgba(255,157,92,.05) 0%, transparent 42%, rgba(120,170,255,.07) 100%);
+  }
+  #bg-filter::after{
+    content:'';
+    position:absolute; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat:repeat;
+    opacity:.05;
+    mix-blend-mode:overlay;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding-inline:24px;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, "Times New Roman", serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+    color:var(--text);
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  .mono{font-family:"IBM Plex Mono", ui-monospace, "SF Mono", monospace;}
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:500;
+  }
+
+  /* ---- Nav ---- */
+  header.site-nav{
+    position:sticky; top:0; z-index:40;
+    background:linear-gradient(180deg,
+      color-mix(in srgb, var(--bg-elev) 88%, transparent),
+      color-mix(in srgb, var(--bg-elev) 68%, transparent));
+    backdrop-filter:blur(14px) saturate(140%);
+    border-bottom:1px solid var(--border-strong);
+    box-shadow:0 8px 24px -16px rgba(0,0,0,.6);
+  }
+  .nav-inner{
+    max-width:760px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .nav-mark{
+    font-family:"IBM Plex Mono", monospace;
+    font-weight:700; font-size:.8rem; letter-spacing:.02em;
+    display:inline-flex; align-items:center; justify-content:center; flex:none;
+    width:38px; height:38px; border:1.5px solid var(--accent); border-radius:50%;
+    text-decoration:none; color:var(--accent); transition:background .15s ease, color .15s ease;
+  }
+  .nav-mark:hover, .nav-mark:focus-visible{background:var(--accent); color:#1a0f06;}
+  nav.links{display:flex; gap:22px; align-items:center;}
+  nav.links a{
+    font-size:.88rem; text-decoration:none; color:var(--text-dim); transition:color .15s ease;
+  }
+  nav.links a:hover, nav.links a:focus-visible{color:var(--accent);}
+  .nav-actions{display:flex; align-items:center; gap:10px;}
+  .resume-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:9px 16px; border:1.5px solid var(--accent); border-radius:8px;
+    background:none; color:var(--accent); font-family:"IBM Plex Mono", monospace;
+    font-size:.8rem; font-weight:600; letter-spacing:.02em; cursor:pointer;
+    transition:background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .resume-btn:hover{background:var(--accent); color:#1a0f06; transform:translateY(-1px);}
+  .resume-btn:disabled{opacity:.45; cursor:default; transform:none;}
+  .resume-btn svg{flex:none;}
+  .menu-btn{
+    display:none; background:none; border:1px solid var(--border-strong); border-radius:8px;
+    width:38px; height:38px; align-items:center; justify-content:center; color:var(--text);
+    cursor:pointer;
+  }
+  #mobile-panel{display:none;}
+  @media (max-width:640px){
+    nav.links{display:none;}
+    .menu-btn{display:flex;}
+    .resume-btn .rt{display:none;}
+    .resume-btn{padding:9px 11px;}
+    #mobile-panel:not([hidden]){
+      display:flex; flex-direction:column; gap:2px;
+      max-width:760px; margin:0 auto; padding:4px 24px 16px;
+      border-bottom:1px solid var(--border);
+    }
+    #mobile-panel a{
+      display:flex; align-items:center; gap:8px;
+      padding:10px 4px; text-decoration:none; color:var(--text); font-size:.95rem; border-top:1px solid var(--border);
+    }
+  }
+
+  /* ---- Hero ---- */
+  .hero{padding-block:56px 40px; position:relative;}
+  .hero-top{display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
+  .avatar{display:inline-block; position:relative; width:96px; height:96px; flex:none; cursor:pointer;}
+  .avatar .ring{position:absolute; inset:-8px; border-radius:50%; border:1px solid var(--border-strong); opacity:.6;}
+  .avatar .pulse{position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--accent); opacity:.55;}
+  @media (prefers-reduced-motion:no-preference){ .avatar .pulse{ animation: radar 2.6s ease-out infinite; } }
+  @keyframes radar{0%{transform:scale(.86); opacity:.6;} 100%{transform:scale(1.55); opacity:0;}}
+  .avatar .core{
+    position:absolute; inset:0; border-radius:50%; background:var(--bg-elev); border:1.5px solid var(--accent);
+    display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono",monospace;
+    font-weight:500; font-size:.92rem; letter-spacing:.02em; color:var(--accent); box-shadow:var(--shadow); z-index:2;
+  }
+  .avatar .photo{
+    position:absolute; inset:0; width:100%; height:100%; border-radius:50%;
+    object-fit:cover; z-index:2; box-shadow:var(--shadow);
+  }
+  .avatar .edit-badge{
+    position:absolute; bottom:-2px; right:-2px; width:24px; height:24px; border-radius:50%;
+    background:var(--accent); color:#1a0f06; display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow); z-index:3; border:2px solid var(--bg);
+  }
+  .status-pill{
+    display:inline-flex; align-items:center; gap:7px; font-family:"IBM Plex Mono",monospace; font-size:.74rem;
+    padding:6px 11px; border-radius:999px; border:1px solid var(--border-strong); color:var(--text-dim);
+  }
+  .status-pill .blip{width:6px;height:6px;border-radius:50%; background:var(--good); flex:none;}
+  @media (prefers-reduced-motion:no-preference){ .status-pill .blip{ animation: blip 2s ease-in-out infinite; } }
+  @keyframes blip{0%,100%{opacity:1;} 50%{opacity:.25;}}
+
+  .hero .greeting{margin-top:22px; font-size:1rem; color:var(--accent); font-family:"IBM Plex Mono",monospace; letter-spacing:.02em;}
+  .hero h1{font-size:clamp(2.1rem, 5.6vw, 3.1rem); line-height:1.12; margin-top:8px; font-weight:500;}
+  .hero .tagline{
+    margin-top:2px; font-family:"Inter", sans-serif; font-weight:800; text-transform:uppercase;
+    font-size:clamp(1.7rem, 5.4vw, 2.9rem); line-height:1.08; color:var(--text-dim);
+    letter-spacing:-.01em; text-wrap:balance;
+  }
+  .hero .role{margin-top:20px; font-size:1.15rem; color:var(--text-dim); font-weight:400;}
+  .hero .role strong{color:var(--text); font-weight:600;}
+  .hero p.lede{margin-top:18px; max-width:56ch; color:var(--text-dim); font-size:1.02rem;}
+  .type-role{color:var(--text); font-weight:600; white-space:nowrap;}
+  .type-cursor{color:var(--accent); font-weight:400; margin-left:1px;}
+  @media (prefers-reduced-motion:no-preference){ .type-cursor{ animation: caret-blink 1s steps(1) infinite; } }
+  @keyframes caret-blink{50%{opacity:0;}}
+  .hero .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:28px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 18px; border-radius:9px; font-size:.92rem; font-weight:500;
+    text-decoration:none; border:1px solid transparent; transition:transform .12s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{background:var(--accent); color:#1a0f06;}
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-ghost{border-color:var(--border-strong); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent); transform:translateY(-1px);}
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:44px; height:44px; border-radius:50%; flex:none;
+    border:1px solid var(--border-strong); background:var(--bg-elev); color:var(--text);
+    transition:border-color .15s ease, color .15s ease, transform .15s ease;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible{border-color:var(--accent); color:var(--accent); transform:translateY(-2px);}
+
+  /* ---- Stats ---- */
+  .stats-section{padding-block:0 44px; border-top:none;}
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden;}
+  .stat-tile{background:var(--bg-elev); padding:18px 14px;}
+  .stat-num{font-family:"IBM Plex Mono",monospace; font-size:1.6rem; font-weight:500; color:var(--accent); font-variant-numeric:tabular-nums;}
+  .stat-label{font-size:.72rem; color:var(--text-dim); margin-top:4px; line-height:1.35;}
+  @media (max-width:560px){ .stats{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---- Sections ---- */
+  section{padding-block:52px; border-top:1px solid var(--border);}
+  section .eyebrow{margin-bottom:10px; display:block;}
+  section h2{font-size:1.5rem; margin-bottom:20px;}
+
+  .section-head{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:20px;}
+  .section-head h2{margin-bottom:0;}
+  .career-glyph{flex:none; opacity:.92;}
+  @media (max-width:520px){ .career-glyph{width:76px; height:58px;} }
+
+  .about-text{color:var(--text-dim); max-width:62ch;}
+  .about-text p + p{margin-top:14px;}
+  .about-text strong{color:var(--text); font-weight:600;}
+
+  /* ---- Capabilities ---- */
+  .cap-grid{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden;}
+  .cap-tile{background:var(--bg-elev); padding:22px 20px;}
+  .cap-icon{width:30px; height:30px; border-radius:8px; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center;}
+  .cap-title{margin-top:12px; font-family:"Fraunces",serif; font-weight:600; font-size:1.02rem;}
+  .cap-desc{margin-top:8px; color:var(--text-dim); font-size:.88rem; line-height:1.55;}
+  @media (max-width:560px){ .cap-grid{grid-template-columns:1fr;} }
+
+  /* ---- Quote band ---- */
+  .quote-band{background:var(--bg-inset); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding-block:46px;}
+  .quote-band blockquote{
+    font-family:"Fraunces",serif; font-size:clamp(1.25rem,3.2vw,1.6rem); font-weight:500;
+    line-height:1.42; margin:0; color:var(--text); text-wrap:balance;
+  }
+  .quote-band blockquote::before{content:"\201C"; color:var(--accent);}
+  .quote-band blockquote::after{content:"\201D"; color:var(--accent);}
+  .quote-cite{margin-top:16px; font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:.07em;}
+
+  /* ---- Skills ---- */
+  .skill-list{display:flex; flex-direction:column; margin-top:4px;}
+  .skill-row{
+    display:flex; gap:20px; flex-wrap:wrap; padding:10px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .skill-row:first-child{padding-top:0;}
+  .skill-row:last-child{border-bottom:none; padding-bottom:0;}
+  .skill-cat{
+    flex:0 0 170px; font-family:"IBM Plex Mono", monospace; font-size:.72rem; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--text-dim); padding-top:2px;
+  }
+  .skill-items{flex:1 1 260px; min-width:0; font-size:.96rem; color:var(--text); line-height:1.5;}
+  .skill-items .sep{color:var(--border-strong); margin:0 8px; font-family:"IBM Plex Mono",monospace;}
+
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{font-size:.85rem; padding:6px 12px; border-radius:999px; background:var(--bg-inset); border:1px solid var(--border); color:var(--text); white-space:nowrap;}
+
+  /* ---- Experience tabs ---- */
+  .exp-tabs{display:flex; gap:40px; flex-wrap:wrap;}
+  .exp-tablist{
+    flex:0 0 168px; display:flex; flex-direction:column; gap:2px;
+    border-left:2px solid var(--border);
+  }
+  .exp-tab{
+    text-align:left; background:none; border:none; border-left:2px solid transparent; margin-left:-2px;
+    padding:12px 18px; font-family:"IBM Plex Mono", monospace; font-size:.86rem; color:var(--text-dim);
+    cursor:pointer; transition:color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .exp-tab:hover{color:var(--text);}
+  .exp-tab.active{color:var(--accent); border-left-color:var(--accent); background:var(--accent-soft);}
+  .exp-panels{flex:1 1 280px; min-width:0;}
+  .exp-panel{display:none;}
+  .exp-panel.active{display:block;}
+  .exp-role{font-weight:600; font-size:1.05rem;}
+  .exp-org{color:var(--accent); font-weight:500;}
+  .exp-dates{
+    font-family:"IBM Plex Mono", monospace; font-size:.78rem; color:var(--text-dim);
+    margin-top:6px; font-variant-numeric:tabular-nums;
+  }
+  .exp-bullets{list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:12px;}
+  .exp-bullets li{position:relative; padding-left:22px; color:var(--text-dim); font-size:.95rem; line-height:1.6;}
+  .exp-bullets li::before{content:'\203A'; position:absolute; left:0; top:-2px; color:var(--accent); font-weight:600; font-size:1.15rem;}
+  .exp-panel .role-path{margin-top:22px;}
+  @media (max-width:640px){
+    .exp-tabs{flex-direction:column; gap:6px;}
+    .exp-tablist{flex-direction:row; flex-wrap:wrap; border-left:none; border-bottom:2px solid var(--border); gap:2px; padding-bottom:2px;}
+    .exp-tab{border-left:none; margin-left:0; border-bottom:2px solid transparent; margin-bottom:-2px; padding:10px 14px;}
+    .exp-tab.active{border-bottom-color:var(--accent); border-left-color:transparent;}
+  }
+
+  .role-path{margin-top:16px; display:flex; flex-direction:column;}
+  .rp-row{display:flex; gap:10px;}
+  .rp-rail{width:8px; flex:none; display:flex; flex-direction:column; align-items:center;}
+  .rp-dot{width:7px; height:7px; border-radius:50%; background:var(--bg); border:1.5px solid var(--border-strong); margin-top:4px; flex:none;}
+  .rp-dot.current{border-color:var(--accent); background:var(--accent);}
+  .rp-line{flex:1; width:1.5px; background:var(--border-strong); margin-block:2px -2px;}
+  .rp-label{font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--text-dim); padding-bottom:10px;}
+  .rp-row:last-child .rp-label{padding-bottom:0; color:var(--accent); font-weight:600;}
+
+  /* ---- Education ---- */
+  .edu-tabs{display:flex; gap:40px; flex-wrap:wrap;}
+  .edu-tablist{
+    flex:0 0 168px; display:flex; flex-direction:column; gap:2px;
+    border-left:2px solid var(--border);
+  }
+  .edu-tab{
+    padding:12px 18px; font-family:"IBM Plex Mono", monospace; font-size:.86rem;
+    border-left:2px solid var(--accent); margin-left:-2px; color:var(--accent); background:var(--accent-soft);
+  }
+  .edu-panels{flex:1 1 280px; min-width:0;}
+  .edu-role{font-weight:600; font-size:1.05rem;}
+  .edu-org{color:var(--accent); font-weight:500;}
+  .edu-dates{
+    font-family:"IBM Plex Mono", monospace; font-size:.78rem; color:var(--text-dim);
+    margin-top:6px; font-variant-numeric:tabular-nums;
+  }
+  .edu-bullets{list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:12px;}
+  .edu-bullets li{position:relative; padding-left:22px; color:var(--text-dim); font-size:.95rem; line-height:1.6;}
+  .edu-bullets li::before{content:'\203A'; position:absolute; left:0; top:-2px; color:var(--accent); font-weight:600; font-size:1.15rem;}
+  .edu-projects{margin-top:30px;}
+  .edu-projects-label{
+    font-family:"IBM Plex Mono", monospace; font-size:.72rem; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--text-dim); margin-bottom:14px; display:block;
+  }
+  .edu-project{padding:18px 0; border-top:1px solid var(--border);}
+  .edu-project:first-child{border-top:none; padding-top:0;}
+  .edu-project-title{font-weight:600; font-size:.98rem;}
+  .edu-project-meta{font-family:"IBM Plex Mono", monospace; font-size:.75rem; color:var(--text-dim); margin-top:5px;}
+  .edu-project-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;}
+  .edu-project-actions .btn{padding:9px 15px; font-size:.82rem;}
+  @media (max-width:640px){
+    .edu-tabs{flex-direction:column; gap:6px;}
+    .edu-tablist{flex-direction:row; border-left:none; border-bottom:2px solid var(--border); padding-bottom:2px;}
+    .edu-tab{border-left:none; margin-left:0; border-bottom:2px solid var(--accent); margin-bottom:-2px;}
+  }
+
+  /* ---- Fixed side social rail (replaces the old Contact section) ---- */
+  .side-social{
+    position:fixed; top:50%; transform:translateY(-50%); z-index:30;
+    display:flex; flex-direction:column; align-items:center; gap:20px;
+  }
+  .side-social-left{left:28px;}
+  .side-social-right{right:24px;}
+  .side-social a, .side-email-link{color:var(--text-dim); display:flex; transition:color .15s ease, transform .15s ease; text-decoration:none;}
+  .side-social a:hover, .side-social a:focus-visible{color:var(--accent); transform:translateY(-2px);}
+  .side-line{width:1px; height:64px; background:var(--border-strong);}
+  .side-email-link{
+    writing-mode:vertical-rl; font-family:"IBM Plex Mono",monospace; font-size:.74rem;
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .side-email-link:hover{color:var(--accent);}
+  @media (max-width:900px){ .side-social{display:none;} }
+
+  footer{
+    padding-block:32px 48px; display:flex; justify-content:space-between; gap:16px;
+    flex-wrap:wrap; align-items:center; font-size:.82rem; color:var(--text-dim);
+  }
+  footer .foot-icons{display:flex; gap:14px; align-items:center;}
+  footer .foot-icons a{color:var(--text-dim); display:flex;}
+  footer .foot-icons a:hover{color:var(--accent);}
+  footer .back-top{font-family:"IBM Plex Mono",monospace; font-size:.76rem; text-decoration:none; color:var(--text-dim); border-left:1px solid var(--border); padding-left:14px;}
+  footer .back-top:hover{color:var(--accent);}
+
+  /* ---- Boot screen: an old single-monitor "click to start" gate ---- */
+  header.site-nav, .side-social, main.wrap{
+    opacity:0;
+    transition:opacity 1.2s ease;
+  }
+  body.booted header.site-nav, body.booted .side-social, body.booted main.wrap{
+    opacity:1;
+  }
+  #boot-screen{
+    position:fixed; inset:0; z-index:9999;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at 50% 45%, #10131f 0%, #05060b 75%);
+    cursor:pointer; transition:opacity 1s ease;
+  }
+  #boot-screen.boot-hide{ opacity:0; pointer-events:none; }
+  .boot-monitor{
+    position:relative; width:min(520px, 82vw); aspect-ratio:4 / 3;
+    background:linear-gradient(150deg, #23273a, #0d0f16);
+    border-radius:22px; padding:20px;
+    box-shadow:0 30px 70px -24px rgba(0,0,0,.8), inset 0 0 0 2px rgba(255,255,255,.05);
+  }
+  .boot-screen-inner{
+    position:relative; width:100%; height:100%; overflow:hidden; border-radius:9px;
+    background:radial-gradient(ellipse at 50% 42%, #0b0f0c 0%, #030402 72%);
+    box-shadow:inset 0 0 46px rgba(0,0,0,.85), inset 0 0 3px rgba(255,157,92,.35);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .boot-scanlines{
+    position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.3) 0px, rgba(0,0,0,.3) 1px, transparent 2px, transparent 3px);
+  }
+  .boot-glow{
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 45%, rgba(255,157,92,.1), transparent 65%);
+  }
+  .boot-text{ position:relative; text-align:center; font-family:"IBM Plex Mono", monospace; color:var(--accent); text-shadow:0 0 8px rgba(255,157,92,.6); padding-inline:16px; }
+  .boot-prompt{ font-size:.72rem; opacity:.6; letter-spacing:.05em; margin-bottom:16px; }
+  .boot-start{ font-size:1.05rem; letter-spacing:.12em; font-weight:600; }
+  .boot-cursor{ display:inline-block; margin-left:4px; }
+  @media (prefers-reduced-motion:no-preference){ .boot-cursor{ animation:boot-blink 1s steps(1) infinite; } }
+  @keyframes boot-blink{ 50%{ opacity:0; } }
+  .boot-stand{
+    position:absolute; left:50%; bottom:-30px; transform:translateX(-50%);
+    width:84px; height:30px;
+    background:linear-gradient(150deg, #262a3d, #121420);
+    clip-path:polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  }
+  @media (prefers-reduced-motion:reduce){
+    header.site-nav, .side-social, main.wrap, #boot-screen{ transition:none; }
+  }
+
+</style>
+</head>
+<body>
+<canvas id="nebula-bg" aria-hidden="true"></canvas>
+<div id="bg-filter" aria-hidden="true"></div>
+
+<div id="boot-screen" role="button" tabindex="0" aria-label="Click to start">
+  <div class="boot-monitor">
+    <div class="boot-screen-inner">
+      <div class="boot-scanlines" aria-hidden="true"></div>
+      <div class="boot-glow" aria-hidden="true"></div>
+      <div class="boot-text">
+        <div class="boot-prompt">&gt; SYSTEM READY</div>
+        <div class="boot-start">CLICK TO START<span class="boot-cursor" aria-hidden="true">&#9608;</span></div>
+      </div>
+    </div>
+    <div class="boot-stand" aria-hidden="true"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var boot = document.getElementById('boot-screen');
+  if (!boot) return;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.style.overflow = 'hidden';
+  var started = false;
+
+  function start(){
+    if (started) return;
+    started = true;
+    document.body.classList.add('booted');
+    document.documentElement.style.overflow = '';
+    if (reduceMotion){
+      boot.style.display = 'none';
+      return;
+    }
+    boot.classList.add('boot-hide');
+    setTimeout(function(){ boot.style.display = 'none'; }, 1050);
+  }
+
+  boot.addEventListener('click', start);
+  boot.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); start(); }
+  });
+})();
+</script>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-mark" href="#top" aria-label="Shashank Goud Kodipyaka">SGK</a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#hobbies">Interests</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="resume-btn" id="resume-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v13m0 0 5-5m-5 5-5-5"/><path d="M4 19.5h16"/></svg>
+        <span class="rt">Resume</span>
+      </button>
+      <button class="menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="mobile-panel" aria-label="Toggle menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-panel" hidden>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#hobbies">Interests</a>
+  </div>
+</header>
+
+<div class="side-social side-social-left">
+  <a href="https://www.linkedin.com/in/shashank-goud-kodipyaka-8530a872/" target="_blank" rel="noopener" aria-label="LinkedIn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05C19.9 8 21 10.2 21 13.6V23h-4v-8.6c0-2.05-.04-4.7-2.86-4.7-2.87 0-3.31 2.24-3.31 4.55V23h-4V8z"/></svg>
+  </a>
+  <a href="https://github.com/stratershashank24-creator" target="_blank" rel="noopener" aria-label="GitHub">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A10.99 10.99 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+  </a>
+  <span class="side-line" aria-hidden="true"></span>
+</div>
+<div class="side-social side-social-right">
+  <a class="side-email-link" href="mailto:stratershashank24@gmail.com">Email me</a>
+  <span class="side-line" aria-hidden="true"></span>
+</div>
+
+<main class="wrap" id="top">
+
+  <section class="hero" style="border-top:none;">
+    <div class="hero-top">
+      <div>
+        <label class="avatar" for="avatar-input" id="avatar-btn" title="Click to add your photo">
+          <span class="ring"></span>
+          <span class="pulse"></span>
+          <span class="core" id="avatar-core">SGK</span>
+          <img class="photo" id="avatar-photo" src="" alt="Shashank Goud Kodipyaka" hidden>
+          <span class="edit-badge" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>
+          </span>
+        </label>
+        <input type="file" id="avatar-input" accept="image/*" hidden>
+      </div>
+      <span class="status-pill"><span class="blip"></span>Currently building at Optum</span>
+    </div>
+
+    <p class="greeting">Hello, my name is</p>
+    <h1>Shashank Goud Kodipyaka.</h1>
+    <p class="tagline">I build things for the physical world and test.</p>
+    <p class="role">Currently <strong>Senior Software Engineer</strong> at Optum Technology Solutions</p>
+    <p class="lede">I'm a <span class="type-role"><span id="type-role-text">Automation Specialist</span><span class="type-cursor" aria-hidden="true">|</span></span> based in Hyderabad, with a passion for leading complex automation and equipment engineering projects in high-tech corporations.</p>
+    <div class="cta-row">
+      <a class="icon-btn" href="https://www.linkedin.com/in/shashank-goud-kodipyaka-8530a872/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05C19.9 8 21 10.2 21 13.6V23h-4v-8.6c0-2.05-.04-4.7-2.86-4.7-2.87 0-3.31 2.24-3.31 4.55V23h-4V8z"/></svg>
+      </a>
+      <a class="icon-btn" href="https://github.com/stratershashank24-creator" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A10.99 10.99 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats">
+      <div class="stat-tile"><div class="stat-num">9+</div><div class="stat-label">Years in tech</div></div>
+      <div class="stat-tile"><div class="stat-num">2</div><div class="stat-label">Companies</div></div>
+      <div class="stat-tile"><div class="stat-num">5</div><div class="stat-label">Roles progressed through</div></div>
+      <div class="stat-tile"><div class="stat-num">1</div><div class="stat-label">Published journal paper</div></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <span class="eyebrow">About</span>
+    <h2>From fading channels to production code</h2>
+    <div class="about-text">
+      <p>I trained as an <strong>Electronics &amp; Communication Engineer</strong> at ACE Engineering College in Ghatkesar &mdash; a JNTUH-affiliated college (now autonomous) &mdash; where my final-year work looked at how signals hold up under noise and multipath interference.</p>
+      <p>That question turned out to be good preparation for a career in quality engineering. I joined <strong>Cognizant in October 2016</strong> as a fresher and spent close to six years there, starting on a banking &amp; investment project and later moving into healthcare, where I worked as a tester and grew into automation. Along the way I picked up the tools of the trade: Selenium, Cucumber, and the enterprise platforms that keep large systems observable and supportable.</p>
+      <p>Since <strong>July 2022</strong>, I've been a <strong>Senior Software Engineer at Optum Technology Solutions</strong>, carrying that same instinct for finding what's broken and reliability into building the software itself.</p>
+    </div>
+  </section>
+
+  <section id="capabilities">
+    <span class="eyebrow">How I Work</span>
+    <h2>What I bring to a team</h2>
+    <div class="cap-grid">
+      <div class="cap-tile">
+        <div class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.4 8.9 8 11 4.6-2.1 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="cap-title">Quality-first engineering</div>
+        <div class="cap-desc">Years spent finding what breaks before release shape how I write and review code today &mdash; testing isn't an afterthought, it's part of the build.</div>
+      </div>
+      <div class="cap-tile">
+        <div class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg></div>
+        <div class="cap-title">Automation &amp; test frameworks</div>
+        <div class="cap-desc">Selenium, Selenium Grid, Cucumber and TestNG for regression suites that scale across releases, not just individual test cases.</div>
+      </div>
+      <div class="cap-tile">
+        <div class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></div>
+        <div class="cap-title">Cross-domain systems</div>
+        <div class="cap-desc">Comfortable in regulated, complex environments &mdash; from banking &amp; investment platforms to healthcare &mdash; where correctness matters as much as speed.</div>
+      </div>
+      <div class="cap-tile">
+        <div class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg></div>
+        <div class="cap-title">Full-lifecycle delivery</div>
+        <div class="cap-desc">From requirement and test design through to writing production code as a Senior Software Engineer &mdash; I've worked the full path from spec to shipped feature.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <div class="wrap">
+      <blockquote>Six years of trying to break other people's software taught me the one thing that matters most in writing my own: assume it's broken until you've proven otherwise.</blockquote>
+      <div class="quote-cite">My working philosophy</div>
+    </div>
+  </div>
+
+  <section id="skills">
+    <span class="eyebrow">Skills</span>
+    <h2>What I work with</h2>
+    <div class="skill-list">
+      <div class="skill-row">
+        <span class="skill-cat">Languages</span>
+        <div class="skill-items">Java<span class="sep">&middot;</span>Python<span class="sep">&middot;</span>SQL</div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cat">Automation &amp; Testing</span>
+        <div class="skill-items">Selenium WebDriver<span class="sep">&middot;</span>Selenium Grid<span class="sep">&middot;</span>Cucumber (BDD)<span class="sep">&middot;</span>TestNG</div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cat">Test &amp; Project Management</span>
+        <div class="skill-items">qTest<span class="sep">&middot;</span>Rally</div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cat">Enterprise Platforms</span>
+        <div class="skill-items">ServiceNow<span class="sep">&middot;</span>HPSM<span class="sep">&middot;</span>F5<span class="sep">&middot;</span>Snowflake</div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cat">Tooling</span>
+        <div class="skill-items">GitHub<span class="sep">&middot;</span>IntelliJ IDEA<span class="sep">&middot;</span>Eclipse</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Experience</span>
+        <h2>Where I've worked</h2>
+      </div>
+      <svg class="career-glyph" viewBox="0 0 140 108" width="96" height="74" aria-hidden="true">
+        <rect x="20" y="10" width="76" height="52" rx="4" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <rect x="26" y="16" width="64" height="40" rx="2" fill="rgba(255,157,92,0.08)"/>
+        <line x1="33" y1="25" x2="63" y2="25" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="33" y1="32.5" x2="76" y2="32.5" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="33" y1="40" x2="52" y2="40" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="33" y1="47.5" x2="69" y2="47.5" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M52 62 L64 62 L68 75 L48 75 Z" fill="none" stroke="var(--border-strong)" stroke-width="2"/>
+        <rect x="35" y="77" width="46" height="5" rx="2.5" fill="var(--border-strong)"/>
+        <rect x="8" y="88" width="62" height="13" rx="2" fill="none" stroke="var(--border-strong)" stroke-width="1.6"/>
+        <path d="M104 82 h17 v15 a8.5 8.5 0 0 1 -17 0 z" fill="none" stroke="var(--text-dim)" stroke-width="2"/>
+        <path d="M121 86 q9 0 7 8.5 q-1.2 5.5 -7 5.5" fill="none" stroke="var(--text-dim)" stroke-width="2"/>
+        <path d="M108 78 q2 -4 0 -6.5 M114.5 78 q2 -4 0 -6.5" stroke="var(--text-dim)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M130 100 v-11 M130 89 q-6 -4.5 -10.5 -2 M130 89 q6 -4.5 10.5 -2 M130 91 q-4 -6.5 -2 -10.5" stroke="var(--good)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <rect x="124" y="100" width="13" height="8" rx="1.5" fill="none" stroke="var(--border-strong)" stroke-width="1.6"/>
+      </svg>
+    </div>
+
+    <div class="exp-tabs">
+      <div class="exp-tablist" role="tablist" aria-label="Employers">
+        <button type="button" class="exp-tab active" data-tab="optum" role="tab" aria-selected="true" id="exp-tab-optum" aria-controls="exp-panel-optum">Optum</button>
+        <button type="button" class="exp-tab" data-tab="cognizant" role="tab" aria-selected="false" id="exp-tab-cognizant" aria-controls="exp-panel-cognizant">Cognizant</button>
+      </div>
+      <div class="exp-panels">
+        <div class="exp-panel active" id="exp-panel-optum" role="tabpanel" aria-labelledby="exp-tab-optum">
+          <div class="exp-role">Senior Software Engineer <span class="exp-org">&middot; Optum Technology Solutions</span></div>
+          <div class="exp-dates">JUL 2022 &mdash; PRESENT</div>
+          <ul class="exp-bullets">
+            <li>Continuing a path from quality engineering into software engineering within Optum's technology organization.</li>
+            <li>Carrying a quality-first mindset from six years in quality engineering into how software is designed, written, and reviewed.</li>
+          </ul>
+        </div>
+        <div class="exp-panel" id="exp-panel-cognizant" role="tabpanel" aria-labelledby="exp-tab-cognizant" hidden>
+          <div class="exp-role">Analyst &rarr; Senior Quality Engineer <span class="exp-org">&middot; Cognizant</span></div>
+          <div class="exp-dates">OCT 2016 &mdash; JUL 2022</div>
+          <ul class="exp-bullets">
+            <li>Joined as a fresher on a banking &amp; investment project, then moved into a healthcare project as a tester.</li>
+            <li>Progressed through Analyst, Test Analyst, Automation Test Engineer, and Senior Quality Engineer over roughly six years.</li>
+            <li>Built automation suites with Selenium, Selenium Grid, Cucumber (BDD), and TestNG for regression testing at scale.</li>
+            <li>Worked across enterprise platforms including ServiceNow, HPSM, F5, and Snowflake supporting large systems.</li>
+          </ul>
+          <div class="role-path">
+            <div class="rp-row"><div class="rp-rail"><span class="rp-dot"></span><span class="rp-line"></span></div><div class="rp-label">Analyst</div></div>
+            <div class="rp-row"><div class="rp-rail"><span class="rp-dot"></span><span class="rp-line"></span></div><div class="rp-label">Test Analyst</div></div>
+            <div class="rp-row"><div class="rp-rail"><span class="rp-dot"></span><span class="rp-line"></span></div><div class="rp-label">Automation Test Engineer</div></div>
+            <div class="rp-row"><div class="rp-rail"><span class="rp-dot current"></span></div><div class="rp-label">Senior Quality Engineer</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <span class="eyebrow">Education</span>
+    <h2>Academic background</h2>
+
+    <div class="edu-tabs">
+      <div class="edu-tablist">
+        <div class="edu-tab">B.Tech</div>
+      </div>
+      <div class="edu-panels">
+        <div class="edu-panel">
+          <div class="edu-role">B.Tech, Electronics &amp; Communication Engineering <span class="edu-org">&middot; ACE Engineering College (JNTUH)</span></div>
+          <div class="edu-dates">GRADUATED MAY &rsquo;16</div>
+          <ul class="edu-bullets">
+            <li>Ghatkesar, Hyderabad &mdash; affiliated with JNTUH (now autonomous).</li>
+            <li>Coursework included IC applications, microprocessors &amp; microcontrollers, control systems, and CAD/CAM tools (AutoCAD, ANSYS).</li>
+          </ul>
+
+          <div class="edu-projects">
+            <span class="edu-projects-label">Projects</span>
+
+            <div class="edu-project">
+              <div class="edu-project-title">PC Controlled Home Automation System</div>
+              <div class="edu-project-meta">C &middot; Arduino UNO microcontroller &middot; GUI &middot; May 2014 &middot; ACE Engineering College, Hyderabad</div>
+              <ul class="edu-bullets">
+                <li>Developed a program to operate home appliances using a Personal Computer.</li>
+                <li>Interfaced an LCD and used a Graphical User Interface (GUI) to operate home appliances.</li>
+              </ul>
+            </div>
+
+            <div class="edu-project">
+              <div class="edu-project-title">Performance Analysis of a 3&times;2 MIMO System for Fading Channel</div>
+              <div class="edu-project-meta">Published &middot; International Journal of Engineering and Computer Science (IJECS)</div>
+              <ul class="edu-bullets">
+                <li>Co-authored with Anvesh Nalluri, Anirudh S, and Davuluri Sai Teja, guided by Chandu DS, Dept. of ECE.</li>
+                <li>Studied MIMO wireless system performance and power allocation under fading-channel conditions.</li>
+              </ul>
+              <div class="edu-project-actions">
+                <a class="btn btn-ghost" href="https://ijecs.in/index.php/ijecs/article/view/2224/2050" target="_blank" rel="noopener">View on IJECS &#8599;</a>
+                <a class="btn btn-ghost" href="mimo-paper.pdf" target="_blank" rel="noopener">View PDF</a>
+                <a class="btn btn-ghost" href="mimo-paper.pdf" download="Kodipyaka_MIMO_Fading_Channel.pdf">Download PDF</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hobbies">
+    <span class="eyebrow">Beyond Work</span>
+    <h2>Interests</h2>
+    <p class="about-text" style="margin-bottom:16px;">A few things I follow outside of work:</p>
+    <div class="tag-row" id="hobbies-tags">
+      <span class="tag">Blockchain enthusiast</span>
+      <span class="tag">Trading &amp; markets</span>
+      <span class="tag">Time-bending concepts</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; <span id="year"></span> Shashank Goud Kodipyaka</span>
+    <div class="foot-icons">
+      <a href="https://www.linkedin.com/in/shashank-goud-kodipyaka-8530a872/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05C19.9 8 21 10.2 21 13.6V23h-4v-8.6c0-2.05-.04-4.7-2.86-4.7-2.87 0-3.31 2.24-3.31 4.55V23h-4V8z"/></svg>
+      </a>
+      <a href="https://github.com/stratershashank24-creator" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A10.99 10.99 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+      </a>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+</main>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<script>
+  (function(){
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    var btn = document.getElementById('menu-toggle');
+    var panel = document.getElementById('mobile-panel');
+    btn.addEventListener('click', function(){
+      var open = !panel.hidden;
+      panel.hidden = open;
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    panel.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){ panel.hidden = true; btn.setAttribute('aria-expanded','false'); });
+    });
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        var id = a.getAttribute('href').slice(1);
+        var target = id === 'top' ? document.getElementById('top') : document.getElementById(id);
+        if(!target) return;
+        e.preventDefault();
+        target.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block: 'start'});
+      });
+    });
+
+    // Photo upload: lets the page owner drop in a headshot from this browser.
+    // Stored only in this browser's local storage (a per-viewer convenience) —
+    // it will not appear for other visitors unless baked into the page directly.
+    var avatarInput = document.getElementById('avatar-input');
+    var avatarPhoto = document.getElementById('avatar-photo');
+    var avatarCore = document.getElementById('avatar-core');
+    var AVATAR_KEY = 'sgk-portfolio-avatar';
+
+    function showPhoto(dataUrl){
+      avatarPhoto.src = dataUrl;
+      avatarPhoto.hidden = false;
+      avatarCore.hidden = true;
+    }
+
+    try {
+      var saved = window.localStorage.getItem(AVATAR_KEY);
+      if (saved) showPhoto(saved);
+    } catch (e) { /* storage unavailable — keep the monogram */ }
+
+    if (avatarInput){
+      avatarInput.addEventListener('change', function(){
+        var file = avatarInput.files && avatarInput.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(){
+          showPhoto(reader.result);
+          try { window.localStorage.setItem(AVATAR_KEY, reader.result); } catch (e) { /* ignore */ }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Experience tabs
+    var expTabs = document.querySelectorAll('.exp-tab');
+    expTabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        var target = tab.getAttribute('data-tab');
+        expTabs.forEach(function(t){
+          var active = t === tab;
+          t.classList.toggle('active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
+        document.querySelectorAll('.exp-panel').forEach(function(panel){
+          var match = panel.id === 'exp-panel-' + target;
+          panel.classList.toggle('active', match);
+          panel.hidden = !match;
+        });
+      });
+    });
+
+    // Typewriter role: types each title, holds, backspaces, then moves to
+    // the next — loops continuously to show a few sides of the same role.
+    var typeEl = document.getElementById('type-role-text');
+    if (typeEl){
+      if (reduceMotion){
+        typeEl.textContent = 'Automation Specialist';
+      } else {
+        var typeWords = ['Automation Specialist', 'Robotics Enthusiast', 'AI Vision Engineer'];
+        var typeWordIndex = 0, typeCharIndex = 0, typeDeleting = false;
+        var TYPE_DELAY = 75, DELETE_DELAY = 40, HOLD_DELAY = 1500, SWAP_DELAY = 400;
+
+        (function typeTick(){
+          var word = typeWords[typeWordIndex];
+          if (!typeDeleting){
+            typeCharIndex++;
+            typeEl.textContent = word.slice(0, typeCharIndex);
+            if (typeCharIndex === word.length){
+              typeDeleting = true;
+              setTimeout(typeTick, HOLD_DELAY);
+              return;
+            }
+            setTimeout(typeTick, TYPE_DELAY);
+          } else {
+            typeCharIndex--;
+            typeEl.textContent = word.slice(0, typeCharIndex);
+            if (typeCharIndex === 0){
+              typeDeleting = false;
+              typeWordIndex = (typeWordIndex + 1) % typeWords.length;
+              setTimeout(typeTick, SWAP_DELAY);
+              return;
+            }
+            setTimeout(typeTick, DELETE_DELAY);
+          }
+        })();
+      }
+    }
+  })();
+</script>
+
+<script>
+(function(){
+  // A nebula field for a background: drifting gas clouds and three depth
+  // layers of twinkling, slowly-drifting stars.
+  var canvas = document.getElementById('nebula-bg');
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W, H, DPR;
+
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.width = Math.floor(window.innerWidth * DPR);
+    H = canvas.height = Math.floor(window.innerHeight * DPR);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function rand(min, max){ return min + Math.random() * (max - min); }
+
+  var blobs = [[95, 205, 225], [190, 110, 230], [110, 95, 235], [255, 160, 110]].map(function(rgb){
+    return {
+      baseX: rand(0.1, 0.9), baseY: rand(0.06, 0.8),
+      driftR: rand(0.07, 0.16), driftSpeed: rand(0.00014, 0.00032) * (Math.random() < 0.5 ? 1 : -1),
+      phase: rand(0, Math.PI * 2), rel: rand(0.28, 0.46), rgb: rgb, alpha: rand(0.09, 0.17)
+    };
+  });
+
+  function makeStars(count, rMin, rMax, alphaMax, drift){
+    var arr = [];
+    for (var i = 0; i < count; i++){
+      arr.push({ x: Math.random(), y: Math.random(), r: rand(rMin, rMax), tw: rand(0, Math.PI * 2), sp: rand(0.5, 1.6), alphaMax: alphaMax, drift: drift });
+    }
+    return arr;
+  }
+  var starsFar = makeStars(100, 0.3, 0.7, 0.42, 0.5);
+  var starsMid = makeStars(65, 0.6, 1.2, 0.65, 1.1);
+  var starsNear = makeStars(30, 1.0, 1.8, 0.85, 1.9);
+
+  // A small, subtle solar system tucked into one corner of the backdrop —
+  // a sun with all nine planets on faint elliptical orbits. Kept small and
+  // low-opacity so it reads as texture, never competing with hero text.
+  var sunPos = { xFrac: 0.86, yFrac: 0.15 };
+  var solarPlanets = [
+    { name: 'mercury', r: 3.0, orbitFrac: 0.068, speed: 0.00030, color: [190, 180, 170], startAngle: 0.3 },
+    { name: 'venus',   r: 4.1, orbitFrac: 0.092, speed: 0.00024, color: [230, 200, 145], startAngle: 2.1 },
+    { name: 'earth',   r: 4.9, orbitFrac: 0.119, speed: 0.00019, color: [110, 175, 230], startAngle: 4.0, earth: true },
+    { name: 'mars',    r: 3.5, orbitFrac: 0.146, speed: 0.00016, color: [205, 110, 80],  startAngle: 5.4 },
+    { name: 'jupiter', r: 8.4, orbitFrac: 0.184, speed: 0.00011, color: [220, 180, 130], startAngle: 1.1 },
+    { name: 'saturn',  r: 7.0, orbitFrac: 0.222, speed: 0.00009, color: [230, 205, 150], startAngle: 3.3, ring: true },
+    { name: 'uranus',  r: 5.4, orbitFrac: 0.257, speed: 0.00007, color: [150, 215, 220], startAngle: 0.8 },
+    { name: 'neptune', r: 5.4, orbitFrac: 0.286, speed: 0.00006, color: [95, 115, 220],  startAngle: 5.9 },
+    { name: 'pluto',   r: 2.2, orbitFrac: 0.310, speed: 0.00005, color: [190, 175, 165], startAngle: 2.7 }
+  ];
+
+  // A handful of small space stations spread across the whole backdrop,
+  // with astronaut figures that drift in slow arcs from one station to
+  // another — a spacier, bigger-scale replacement for the old circuit motif.
+  var spaceStations = [
+    { xFrac: 0.93, yFrac: 0.44, r: 23, rot: -0.5 },
+    { xFrac: 0.13, yFrac: 0.76, r: 17, rot: 0.8 },
+    { xFrac: 0.88, yFrac: 0.86, r: 22, rot: -0.2 },
+    { xFrac: 0.46, yFrac: 0.94, r: 16, rot: 0.55 }
+  ];
+
+  var astronauts = (function(){
+    var arr = [];
+    var count = Math.min(3, spaceStations.length);
+    for (var k = 0; k < count; k++){
+      var fromIdx = Math.floor(Math.random() * spaceStations.length);
+      var toIdx = fromIdx;
+      while (toIdx === fromIdx) toIdx = Math.floor(Math.random() * spaceStations.length);
+      arr.push({
+        from: spaceStations[fromIdx], to: spaceStations[toIdx],
+        progress: Math.random(), speed: rand(0.00005, 0.00009),
+        bob: rand(0, Math.PI * 2), arcSign: Math.random() < 0.5 ? 1 : -1
+      });
+    }
+    return arr;
+  })();
+
+  var last = 0;
+  function draw(t){
+    var dt = Math.min(t - last, 48); last = t;
+
+    var base = ctx.createRadialGradient(W * 0.5, H * 0.3, 0, W * 0.5, H * 0.3, Math.max(W, H) * 0.9);
+    base.addColorStop(0, 'rgba(22,20,40,1)');
+    base.addColorStop(1, 'rgba(6,6,14,1)');
+    ctx.fillStyle = base; ctx.fillRect(0, 0, W, H);
+
+    ctx.globalCompositeOperation = 'lighter';
+    blobs.forEach(function(b){
+      var bx = (b.baseX + Math.cos(t * b.driftSpeed + b.phase) * b.driftR) * W;
+      var by = (b.baseY + Math.sin(t * b.driftSpeed * 0.8 + b.phase) * b.driftR) * H;
+      var br = b.rel * Math.max(W, H);
+      var g = ctx.createRadialGradient(bx, by, 0, bx, by, br);
+      g.addColorStop(0, 'rgba(' + b.rgb.join(',') + ',' + b.alpha + ')');
+      g.addColorStop(1, 'rgba(' + b.rgb.join(',') + ',0)');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    });
+    ctx.globalCompositeOperation = 'source-over';
+
+    function drawStars(arr){
+      arr.forEach(function(s){
+        var alpha = reduceMotion ? s.alphaMax * 0.85 : (0.25 + 0.75 * Math.abs(Math.sin(s.tw + t * 0.0012 * s.sp))) * s.alphaMax;
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(230,236,252,' + alpha.toFixed(3) + ')';
+        ctx.arc(s.x * W, s.y * H, s.r * DPR, 0, Math.PI * 2);
+        ctx.fill();
+        if (!reduceMotion){
+          s.x += s.drift * 0.00003 * dt; if (s.x > 1.02) s.x = -0.02;
+          s.y += s.drift * 0.00001 * dt; if (s.y > 1.02) s.y = -0.02;
+        }
+      });
+    }
+    drawStars(starsFar); drawStars(starsMid); drawStars(starsNear);
+
+    function drawPlanetBody(px, py, pr, color, ringed){
+      if (ringed){
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(-0.35);
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(' + color.join(',') + ',0.3)';
+        ctx.lineWidth = Math.max(0.8, pr * 0.22);
+        ctx.ellipse(0, 0, pr * 1.85, pr * 0.6, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+      var shade = color.map(function(c){ return Math.max(0, c - 70); });
+      var body = ctx.createRadialGradient(px - pr * 0.35, py - pr * 0.35, pr * 0.1, px, py, pr);
+      body.addColorStop(0, 'rgba(255,255,255,0.5)');
+      body.addColorStop(0.45, 'rgba(' + color.join(',') + ',0.8)');
+      body.addColorStop(1, 'rgba(' + shade.join(',') + ',0.85)');
+      ctx.beginPath();
+      ctx.fillStyle = body;
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawEarth(px, py, pr, orbitAngle){
+      drawPlanetBody(px, py, pr, [110, 175, 230], false);
+
+      // continents + cloud swirl, clipped to the disc — kept faint so the
+      // sphere still reads as a small background dot, not an illustration.
+      ctx.save();
+      ctx.beginPath(); ctx.arc(px, py, pr, 0, Math.PI * 2); ctx.clip();
+      ctx.fillStyle = 'rgba(120,175,115,0.55)';
+      ctx.beginPath(); ctx.ellipse(px - pr * 0.28, py - pr * 0.12, pr * 0.46, pr * 0.3, 0.4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(px + pr * 0.35, py + pr * 0.32, pr * 0.32, pr * 0.2, -0.3, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.lineWidth = Math.max(0.6, pr * 0.16);
+      ctx.beginPath(); ctx.arc(px, py, pr * 0.72, 0.1, 1.5); ctx.stroke();
+      ctx.restore();
+
+      // moon
+      var moonAngle = orbitAngle * -2.6;
+      var moonR = pr * 2.3;
+      var mx = px + Math.cos(moonAngle) * moonR;
+      var my = py + Math.sin(moonAngle) * moonR * 0.5;
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(205,205,215,0.55)';
+      ctx.arc(mx, my, Math.max(0.8, pr * 0.24), 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawSolarSystem(){
+      var minWH = Math.min(W, H);
+      var sunX = sunPos.xFrac * W, sunY = sunPos.yFrac * H;
+
+      var sunGlow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 30 * DPR);
+      sunGlow.addColorStop(0, 'rgba(255,210,140,0.3)');
+      sunGlow.addColorStop(1, 'rgba(255,210,140,0)');
+      ctx.fillStyle = sunGlow;
+      ctx.fillRect(sunX - 30 * DPR, sunY - 30 * DPR, 60 * DPR, 60 * DPR);
+
+      var sunBody = ctx.createRadialGradient(sunX - 2.5 * DPR, sunY - 2.5 * DPR, 0, sunX, sunY, 7.5 * DPR);
+      sunBody.addColorStop(0, 'rgba(255,255,255,0.85)');
+      sunBody.addColorStop(0.5, 'rgba(255,205,130,0.85)');
+      sunBody.addColorStop(1, 'rgba(255,157,92,0.8)');
+      ctx.beginPath();
+      ctx.fillStyle = sunBody;
+      ctx.arc(sunX, sunY, 7.5 * DPR, 0, Math.PI * 2);
+      ctx.fill();
+
+      solarPlanets.forEach(function(p){
+        var orbitR = p.orbitFrac * minWH * DPR;
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(205,215,235,0.09)';
+        ctx.lineWidth = Math.max(0.6, 0.9 * DPR);
+        ctx.ellipse(sunX, sunY, orbitR, orbitR * 0.42, 0.15, 0, Math.PI * 2);
+        ctx.stroke();
+
+        var angle = p.startAngle + (reduceMotion ? 0 : t * p.speed);
+        var px = sunX + Math.cos(angle) * orbitR;
+        var py = sunY + Math.sin(angle) * orbitR * 0.42;
+        var pr = p.r * DPR;
+
+        if (p.earth){
+          drawEarth(px, py, pr, angle);
+        } else {
+          drawPlanetBody(px, py, pr, p.color, !!p.ring);
+        }
+      });
+    }
+    drawSolarSystem();
+
+    function drawStation(x, y, r, rot){
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+
+      var glow = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 3.4);
+      glow.addColorStop(0, 'rgba(200,210,230,0.12)');
+      glow.addColorStop(1, 'rgba(200,210,230,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(-r * 3.4, -r * 3.4, r * 6.8, r * 6.8);
+
+      function panel(side){
+        ctx.save();
+        ctx.translate(side * r * 1.6, 0);
+        var w = r * 1.3, h = r * 0.7;
+        ctx.fillStyle = 'rgba(120,165,220,0.32)';
+        ctx.strokeStyle = 'rgba(200,220,245,0.4)';
+        ctx.lineWidth = Math.max(0.5, r * 0.05);
+        ctx.fillRect(-w / 2, -h / 2, w, h);
+        ctx.strokeRect(-w / 2, -h / 2, w, h);
+        ctx.beginPath();
+        for (var i = 1; i < 3; i++){ var lx = -w / 2 + (w / 3) * i; ctx.moveTo(lx, -h / 2); ctx.lineTo(lx, h / 2); }
+        ctx.moveTo(-w / 2, 0); ctx.lineTo(w / 2, 0);
+        ctx.stroke();
+        ctx.restore();
+      }
+      panel(-1); panel(1);
+
+      ctx.strokeStyle = 'rgba(200,210,225,0.4)';
+      ctx.lineWidth = Math.max(0.6, r * 0.06);
+      ctx.beginPath(); ctx.moveTo(-r * 0.95, 0); ctx.lineTo(r * 0.95, 0); ctx.stroke();
+
+      var hub = ctx.createRadialGradient(-r * 0.2, -r * 0.2, r * 0.05, 0, 0, r * 0.55);
+      hub.addColorStop(0, 'rgba(255,255,255,0.55)');
+      hub.addColorStop(0.6, 'rgba(200,210,225,0.7)');
+      hub.addColorStop(1, 'rgba(140,150,165,0.75)');
+      ctx.beginPath(); ctx.fillStyle = hub; ctx.arc(0, 0, r * 0.55, 0, Math.PI * 2); ctx.fill();
+
+      ctx.strokeStyle = 'rgba(255,157,92,0.55)';
+      ctx.lineWidth = Math.max(0.5, r * 0.05);
+      ctx.beginPath(); ctx.moveTo(0, -r * 0.55); ctx.lineTo(0, -r * 1.1); ctx.stroke();
+      ctx.beginPath(); ctx.fillStyle = 'rgba(255,157,92,0.75)'; ctx.arc(0, -r * 1.1, r * 0.12, 0, Math.PI * 2); ctx.fill();
+
+      ctx.restore();
+    }
+    spaceStations.forEach(function(st){
+      drawStation(st.xFrac * W, st.yFrac * H, st.r * DPR, st.rot);
+    });
+
+    function drawAstronaut(x, y, phase){
+      // A smooth, minimal silhouette — one rounded suit-blob with tucked
+      // arm bumps instead of separate jointed limbs, so it reads as a
+      // clean little floating figure rather than a stick-person.
+      var s = 11 * DPR;
+      var bob = Math.sin(phase) * 0.5;
+      ctx.save();
+      ctx.translate(x, y + bob * s * 0.25);
+      ctx.rotate(Math.sin(phase * 0.5) * 0.1);
+
+      // backpack (life-support pack), behind the body
+      ctx.fillStyle = 'rgba(190,200,215,0.42)';
+      ctx.beginPath();
+      ctx.ellipse(0, s * 0.15, s * 0.3, s * 0.55, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // suit body — a single smooth, tapered blob
+      var body = ctx.createRadialGradient(-s * 0.15, -s * 0.05, s * 0.05, 0, s * 0.15, s * 0.85);
+      body.addColorStop(0, 'rgba(255,255,255,0.75)');
+      body.addColorStop(0.55, 'rgba(224,230,240,0.9)');
+      body.addColorStop(1, 'rgba(165,175,190,0.92)');
+      ctx.beginPath();
+      ctx.moveTo(0, -s * 0.2);
+      ctx.bezierCurveTo(s * 0.55, -s * 0.15, s * 0.5, s * 0.55, s * 0.22, s * 0.95);
+      ctx.bezierCurveTo(s * 0.12, s * 1.15, -s * 0.12, s * 1.15, -s * 0.22, s * 0.95);
+      ctx.bezierCurveTo(-s * 0.5, s * 0.55, -s * 0.55, -s * 0.15, 0, -s * 0.2);
+      ctx.closePath();
+      ctx.fillStyle = body;
+      ctx.fill();
+
+      // tucked arm bumps, gently swaying with the bob — still part of one
+      // smooth silhouette, no separate stroked limbs
+      ctx.fillStyle = 'rgba(220,227,238,0.85)';
+      ctx.beginPath();
+      ctx.ellipse(-s * 0.48, s * 0.15 + bob * s * 0.12, s * 0.16, s * 0.32, 0.25, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(s * 0.48, s * 0.05 - bob * s * 0.12, s * 0.16, s * 0.32, -0.25, 0, Math.PI * 2);
+      ctx.fill();
+
+      // chest control lights
+      ctx.fillStyle = 'rgba(255,157,92,0.85)';
+      ctx.beginPath(); ctx.arc(-s * 0.08, s * 0.15, s * 0.045, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(140,215,180,0.85)';
+      ctx.beginPath(); ctx.arc(s * 0.08, s * 0.15, s * 0.045, 0, Math.PI * 2); ctx.fill();
+
+      // neck ring
+      ctx.strokeStyle = 'rgba(180,188,202,0.75)';
+      ctx.lineWidth = Math.max(0.8, s * 0.07);
+      ctx.beginPath(); ctx.arc(0, -s * 0.2, s * 0.26, 0.15, Math.PI - 0.15); ctx.stroke();
+
+      // helmet + visor
+      var helm = ctx.createRadialGradient(-s * 0.14, -s * 0.62, s * 0.05, 0, -s * 0.52, s * 0.42);
+      helm.addColorStop(0, 'rgba(255,255,255,0.88)');
+      helm.addColorStop(0.6, 'rgba(220,228,238,0.92)');
+      helm.addColorStop(1, 'rgba(155,165,182,0.92)');
+      ctx.beginPath(); ctx.fillStyle = helm; ctx.arc(0, -s * 0.52, s * 0.42, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(55,85,145,0.78)';
+      ctx.ellipse(s * 0.03, -s * 0.55, s * 0.25, s * 0.28, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.ellipse(-s * 0.06, -s * 0.64, s * 0.08, s * 0.1, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    if (!reduceMotion){
+      astronauts.forEach(function(w){
+        w.progress += w.speed * dt;
+        if (w.progress >= 1){
+          var newFrom = w.to;
+          var toIdx;
+          do { toIdx = Math.floor(Math.random() * spaceStations.length); } while (spaceStations[toIdx] === newFrom);
+          w.from = newFrom; w.to = spaceStations[toIdx]; w.progress = 0;
+          w.arcSign = Math.random() < 0.5 ? 1 : -1;
+        }
+        var fx = w.from.xFrac * W, fy = w.from.yFrac * H;
+        var tx = w.to.xFrac * W, ty = w.to.yFrac * H;
+        var mx = (fx + tx) / 2, my = (fy + ty) / 2;
+        var dx = tx - fx, dy = ty - fy;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        var nx = -dy / dist, ny = dx / dist;
+        var arcAmt = dist * 0.22 * w.arcSign;
+        var cx = mx + nx * arcAmt, cy = my + ny * arcAmt;
+        var tt = w.progress, mtt = 1 - tt;
+        var wx = mtt * mtt * fx + 2 * mtt * tt * cx + tt * tt * tx;
+        var wy = mtt * mtt * fy + 2 * mtt * tt * cy + tt * tt * ty;
+        drawAstronaut(wx, wy, t * 0.006 + w.bob);
+      });
+    }
+
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  // Resume download: builds a one-page PDF from the same facts already on
+  // this page, then hands it to the viewer via the downloads capability
+  // (falling back to opening the PDF directly if that capability, or the
+  // PDF library itself, isn't available in this view).
+  var btn = document.getElementById('resume-btn');
+  if (!btn) return;
+
+  function buildResumePdf(){
+    // Two-column layout: a dark sidebar (mirrors the site's dark theme)
+    // for contact / skills / education, and a light main column for the
+    // summary + experience narrative.
+    var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+
+    var sidebarW = 175;
+    var sx = 24, sy = 44;
+    var sidebarMaxW = sidebarW - sx - 18;
+
+    var ACCENT_LIGHT = [255, 157, 92];   // on dark sidebar bg
+    var ACCENT_MAIN = [204, 96, 42];     // on white main column (print-safe)
+    var DARK = [23, 23, 23];
+    var MID = [92, 92, 92];
+    var LIGHT_GRAY = [138, 138, 138];
+    var BODY_GRAY = [59, 59, 59];
+    var WHITE = [231, 235, 240];
+    var SIDEBAR_DIM = [154, 165, 179];
+
+    // sidebar background
+    doc.setFillColor(23, 26, 34);
+    doc.rect(0, 0, sidebarW, pageH, 'F');
+
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(15); doc.setTextColor(255, 255, 255);
+    doc.splitTextToSize('Shashank Goud Kodipyaka', sidebarMaxW).forEach(function(line){
+      doc.text(line, sx, sy); sy += 17;
+    });
+    sy += 3;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.6); doc.setTextColor.apply(doc, ACCENT_LIGHT);
+    doc.text('Senior Software Engineer', sx, sy); sy += 24;
+
+    // Word-wrap that also breaks long unbroken strings (emails, URLs) at
+    // natural separators (- / @ .) instead of overrunning the column or
+    // chopping mid-letter with no room to breathe.
+    function wrapSmart(text, maxWidth){
+      function widthOf(s){ return doc.getTextWidth(s); }
+      function splitLongToken(token){
+        var parts = [], buf = '';
+        for (var i = 0; i < token.length; i++){
+          buf += token[i];
+          if ('-/@.'.indexOf(token[i]) !== -1){ parts.push(buf); buf = ''; }
+        }
+        if (buf) parts.push(buf);
+        var packed = [], cur = '';
+        parts.forEach(function(p){
+          var test = cur + p;
+          if (widthOf(test) > maxWidth && cur){ packed.push(cur); cur = p; }
+          else { cur = test; }
+        });
+        if (cur) packed.push(cur);
+        return packed;
+      }
+      var words = text.split(' '), lines = [], current = '';
+      words.forEach(function(word){
+        if (widthOf(word) > maxWidth){
+          if (current){ lines.push(current); current = ''; }
+          splitLongToken(word).forEach(function(chunk){ lines.push(chunk); });
+          return;
+        }
+        var test = current ? current + ' ' + word : word;
+        if (widthOf(test) > maxWidth && current){ lines.push(current); current = word; }
+        else { current = test; }
+      });
+      if (current) lines.push(current);
+      return lines;
+    }
+
+    function sHeading(text){
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.6); doc.setTextColor.apply(doc, ACCENT_LIGHT);
+      doc.text(text.toUpperCase(), sx, sy); sy += 12;
+      doc.setDrawColor(51, 56, 74); doc.setLineWidth(0.7);
+      doc.line(sx, sy, sidebarW - 20, sy); sy += 13;
+    }
+    function sLine(text, opts){
+      opts = opts || {};
+      doc.setFont('helvetica', opts.bold ? 'bold' : 'normal');
+      doc.setFontSize(opts.size || 8.6);
+      doc.setTextColor.apply(doc, opts.color || WHITE);
+      wrapSmart(text, sidebarMaxW).forEach(function(line){
+        doc.text(line, sx, sy); sy += opts.lh || 11.5;
+      });
+      sy += opts.gap || 0;
+    }
+    function sLabel(text){
+      sLine(text, { bold: true, size: 7.3, color: ACCENT_LIGHT, lh: 10 });
+    }
+
+    sHeading('Contact');
+    sLabel('Email');
+    sLine('stratershashank24@gmail.com', { size: 8.2, lh: 10.5, gap: 8 });
+    sLabel('Phone');
+    sLine('+91 - 7680095059', { size: 8.2, lh: 10.5, gap: 8 });
+    sLabel('LinkedIn');
+    sLine('linkedin.com/in/shashank-goud-kodipyaka-8530a872', { size: 7.9, lh: 10, gap: 8 });
+    sLabel('GitHub');
+    sLine('github.com/stratershashank24-creator', { size: 7.9, lh: 10, gap: 8 });
+    sy += 4;
+
+    sHeading('Skills');
+    [
+      ['Languages', 'Java, Python, SQL'],
+      ['Automation & Testing', 'Selenium WebDriver, Selenium Grid, Cucumber (BDD), TestNG'],
+      ['Test & Project Management', 'qTest, Rally'],
+      ['Enterprise Platforms', 'ServiceNow, HPSM, F5, Snowflake'],
+      ['Tooling', 'GitHub, IntelliJ IDEA, Eclipse']
+    ].forEach(function(pair){
+      sLine(pair[0], { bold: true, size: 8.2, color: WHITE, lh: 11 });
+      sLine(pair[1], { size: 8.0, color: SIDEBAR_DIM, lh: 10.5 });
+      sy += 7;
+    });
+
+    sHeading('Education');
+    sLine('B.Tech, Electronics & Communication Engineering', { bold: true, size: 8.4, color: WHITE });
+    sy += 3;
+    sLine('ACE Engineering College, Ghatkesar (JNTUH)', { size: 8.0, color: SIDEBAR_DIM });
+
+    // main column
+    var mx = sidebarW + 30, my = 44;
+    var maxWMain = pageW - mx - 34;
+
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); doc.setTextColor.apply(doc, DARK);
+    doc.text('Senior Software Engineer, Optum Technology Solutions  |  Hyderabad, India', mx, my); my += 22;
+
+    function mHeading(text){
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.setTextColor.apply(doc, DARK);
+      doc.text(text.toUpperCase(), mx, my); my += 6;
+      doc.setDrawColor.apply(doc, ACCENT_MAIN); doc.setLineWidth(1.4);
+      doc.line(mx, my, pageW - 34, my); my += 16;
+    }
+    function mPara(text){
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.8); doc.setTextColor.apply(doc, BODY_GRAY);
+      doc.splitTextToSize(text, maxWMain).forEach(function(line){ doc.text(line, mx, my); my += 13.5; });
+    }
+    function mJob(title, dates){
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10.2); doc.setTextColor.apply(doc, DARK);
+      doc.text(title, mx, my); my += 12;
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(8.8); doc.setTextColor.apply(doc, LIGHT_GRAY);
+      doc.text(dates, mx, my); my += 13.5;
+    }
+    function mBullet(text){
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.6); doc.setTextColor.apply(doc, BODY_GRAY);
+      doc.splitTextToSize(text, maxWMain - 12).forEach(function(line, i){
+        doc.text((i === 0 ? '•  ' : '   ') + line, mx, my); my += 13.2;
+      });
+    }
+
+    mHeading('Summary');
+    mPara('Electronics & Communication Engineer by training, quality engineer by trade for six years, now writing software at Optum. Experience spans automation, quality engineering, and production software development.');
+    my += 8;
+
+    mHeading('Experience');
+    mJob('Senior Software Engineer — Optum Technology Solutions', 'Jul 2022 — Present');
+    mBullet('Continuing a path from quality engineering into software engineering within Optum’s technology organization.');
+    mBullet('Carrying a quality-first mindset from six years in quality engineering into how software is designed, written, and reviewed.');
+    my += 7;
+
+    mJob('Analyst → Senior Quality Engineer — Cognizant', 'Oct 2016 — Jul 2022');
+    mBullet('Joined as a fresher on a banking & investment project, then moved to a healthcare project as a tester.');
+    mBullet('Progressed through Analyst, Test Analyst, Automation Test Engineer, and Senior Quality Engineer roles over roughly six years.');
+    mBullet('Built automation suites with Selenium, Selenium Grid, Cucumber (BDD), and TestNG for regression testing at scale.');
+    mBullet('Worked across enterprise platforms including ServiceNow, HPSM, F5, and Snowflake supporting large systems.');
+    my += 8;
+
+    mHeading('Publication');
+    mPara('Published an international journal paper: "Performance Analysis of a 3x2 MIMO System for Fading Channel."');
+
+    return doc;
+  }
+
+  function openBlobFallback(blob){
+    var url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+  }
+
+  btn.addEventListener('click', function(){
+    if (!window.jspdf || !window.jspdf.jsPDF){
+      window.open('mailto:stratershashank24@gmail.com?subject=Resume%20request', '_blank');
+      return;
+    }
+    btn.disabled = true;
+    var label = btn.querySelector('.rt');
+    var prevText = label ? label.textContent : '';
+    if (label) label.textContent = 'Preparing…';
+
+    var hasDownloads = window.claude && typeof window.claude.use === 'function';
+    Promise.resolve(hasDownloads ? window.claude.use('downloads') : null).then(function(downloads){
+      var doc = buildResumePdf();
+      var blob = doc.output('blob');
+      if (!downloads){
+        openBlobFallback(blob);
+        return;
+      }
+      return downloads.save({ filename: 'Shashank_Goud_Kodipyaka_Resume.pdf', data: blob });
+    }).catch(function(err){
+      if (err && err.code === 'declined') return;
+      try { openBlobFallback(buildResumePdf().output('blob')); } catch (e2) { /* give up quietly */ }
+    }).then(function(){
+      btn.disabled = false;
+      if (label) label.textContent = prevText;
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
